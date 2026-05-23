@@ -704,32 +704,40 @@ function App() {
           </div>
 
           <div className="resume-viewer-container glass">
-            {/* Native iframe view of PDF with interactive fallback if not supported */}
+            {/* Native iframe view of PDF */}
             <iframe
               src="/SIVA_PRASATH_RESUME.pdf#toolbar=0"
               title="Siva Prasath S S Resume Document"
               className="resume-iframe"
-              onError={(e) => {
-                console.log('PDF loading error. Rendering interactive fallback widget.', e)
-              }}
-            >
-              <div className="resume-fallback">
-                <div className="resume-fallback-icon">
-                  <FileText size={42} />
-                </div>
-                <h4>Resume Preview Not Available</h4>
-                <p>
-                  Your browser does not support inline PDF previews. Please click the button below to retrieve the copy directly on your storage drive.
-                </p>
-                <a
-                  href="/SIVA_PRASATH_RESUME.pdf"
-                  download="Siva_Prasath_Resume.pdf"
-                  className="btn-primary"
-                >
-                  <Download size={16} /> Grab Resume
-                </a>
-              </div>
-            </iframe>
+            ></iframe>
+          </div>
+
+          {/* Elegant Mobile Resume Card (toggled via CSS on <= 768px screens) */}
+          <div className="resume-mobile-card glass">
+            <div className="resume-mobile-icon-wrap">
+              <FileText size={40} className="text-gradient-primary" />
+            </div>
+            <h4>Resume Preview</h4>
+            <p>
+              View or download Siva Prasath's comprehensive qualifications, technology stack expertise, and experience.
+            </p>
+            <div className="resume-mobile-actions">
+              <a
+                href="/SIVA_PRASATH_RESUME.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-secondary"
+              >
+                <ExternalLink size={16} /> View PDF
+              </a>
+              <a
+                href="/SIVA_PRASATH_RESUME.pdf"
+                download="Siva_Prasath_Resume.pdf"
+                className="btn-primary"
+              >
+                <Download size={16} /> Download
+              </a>
+            </div>
           </div>
         </div>
       </section>
