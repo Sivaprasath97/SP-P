@@ -58,7 +58,7 @@ const Linkedin = ({ size = 20, ...props }) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 )
-import spImg from './assets/sp.JPG'
+import spImg from './assets/sp.png'
 import projectDevflow from './assets/project_devflow.png'
 import projectQuantum from './assets/project_quantum.png'
 import projectApex from './assets/project_apex.png'
