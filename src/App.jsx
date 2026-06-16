@@ -246,8 +246,7 @@ function App() {
       image: projectDevflow,
       desc: 'An e-commerce platform integrated with a multi-level referral tracking and commission distribution system. Features complete shopping cart, catalog, and secure transactions.',
       tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB'],
-      github: 'https://github.com/sivaprasath-s-s/devflow',
-      demo: '#'
+      github: 'https://github.com/sivaprasathdev-sd/devflow-ecommerce-mlm'
     },
     {
       title: 'Project Quantum (Inventory Management)',
@@ -255,8 +254,7 @@ function App() {
       image: projectQuantum,
       desc: 'An enterprise inventory system featuring Role-Based Access Control (RBAC) and automated notifications. Fully containerized with Docker for robust environments.',
       tech: ['PHP Laravel', 'MySQL', 'Docker', 'Bootstrap'],
-      github: 'https://github.com/sivaprasath-s-s/project-quantum',
-      demo: '#'
+      github: 'https://github.com/sivaprasathdev-sd/project-quantum'
     },
     {
       title: 'Project Apex (Developer API Testing)',
@@ -264,8 +262,7 @@ function App() {
       image: projectApex,
       desc: 'A clean developer platform and dashboard for real-time API testing and validation. Integrated with GitHub Actions pipelines for automated test execution and reports.',
       tech: ['React.js', 'Supabase', 'GitHub Actions', 'Postman'],
-      github: 'https://github.com/sivaprasath-s-s/project-apex',
-      demo: '#'
+      github: 'https://github.com/sivaprasathdev-sd/project_apex'
     }
   ]
 
@@ -581,9 +578,6 @@ function App() {
                   >
                     <Github size={16} /> Codebase
                   </a>
-                  <a href={project.demo} className="project-link-btn">
-                    <ExternalLink size={16} /> Live Demo
-                  </a>
                 </div>
               </div>
             </article>
@@ -694,7 +688,7 @@ function App() {
               <p>Siva Prasath S S - Application Developer credentials</p>
             </div>
             <a
-              href="/SIVA_PRASATH_RESUME.pdf"
+              href="/Sivaprasath_SS_Resume.pdf"
               download="Siva_Prasath_Resume.pdf"
               className="btn-primary"
               id="resume-download-btn"
@@ -706,7 +700,7 @@ function App() {
           <div className="resume-viewer-container glass">
             {/* Native iframe view of PDF */}
             <iframe
-              src="/SIVA_PRASATH_RESUME.pdf#toolbar=0"
+              src="/Sivaprasath_SS_Resume.pdf#toolbar=0"
               title="Siva Prasath S S Resume Document"
               className="resume-iframe"
             ></iframe>
@@ -723,7 +717,7 @@ function App() {
             </p>
             <div className="resume-mobile-actions">
               <a
-                href="/SIVA_PRASATH_RESUME.pdf"
+                href="/Sivaprasath_SS_Resume.pdf"
                 target="_blank"
                 rel="noreferrer"
                 className="btn-secondary"
@@ -731,7 +725,7 @@ function App() {
                 <ExternalLink size={16} /> View PDF
               </a>
               <a
-                href="/SIVA_PRASATH_RESUME.pdf"
+                href="/Sivaprasath_SS_Resume.pdf"
                 download="Siva_Prasath_Resume.pdf"
                 className="btn-primary"
               >
