@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import {
   Menu,
   X,
-  Sun,
-  Moon,
   Download,
   Mail,
   Phone,
@@ -11,17 +9,21 @@ import {
   ExternalLink,
   Briefcase,
   GraduationCap,
-  Award,
   Terminal,
   Database,
   Cpu,
   Layers,
   ArrowUp,
   CheckCircle,
-  FileText
+  FileText,
+  Users,
+  Server,
+  ShieldCheck,
+  Workflow,
+  Code
 } from 'lucide-react'
 
-// Custom standard Lucide SVG equivalents for brand icons since they are removed from recent lucide versions
+// Brand Icons
 const Github = ({ size = 20, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -58,15 +60,13 @@ const Linkedin = ({ size = 20, ...props }) => (
     <circle cx="4" cy="4" r="2" />
   </svg>
 )
+
 import spImg from './assets/sp.png'
 import projectDevflow from './assets/project_devflow.png'
 import projectQuantum from './assets/project_quantum.png'
 import projectApex from './assets/project_apex.png'
 
 function App() {
-  // Theme State
-  const [theme, setTheme] = useState('dark')
-
   // Mobile Menu State
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -92,32 +92,25 @@ function App() {
 
   // Subtitle Role Typing Effect
   const roles = [
-    'Application Developer',
-    'Full-Stack Developer',
-    'React.js & Laravel Expert',
-    'Node.js Developer'
+    'Technical Lead',
+    'Full Stack Developer',
+    'MERN & Laravel Specialist',
+    'System Architect'
   ]
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0)
   const [currentText, setCurrentText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
-  // Theme Syncing Effect
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-  }, [theme])
-
   // Scroll Actions Effect (Navbar Scrolled class & Scrollspy)
   useEffect(() => {
     const handleScroll = () => {
-      // Navbar background transition
       if (window.scrollY > 20) {
         setIsScrolled(true)
       } else {
         setIsScrolled(false)
       }
 
-      // Scrollspy active section detection
-      const sections = ['home', 'about', 'skills', 'projects', 'experience', 'resume', 'contact']
+      const sections = ['home', 'about', 'experience', 'skills', 'services', 'projects', 'resume', 'contact']
       const scrollPosition = window.scrollY + 200
 
       for (const sectionId of sections) {
@@ -144,7 +137,6 @@ function App() {
     const typingSpeed = isDeleting ? 40 : 100
 
     if (!isDeleting && currentText === role) {
-      // Hold complete word for 2.2 seconds before starting backspace
       timer = setTimeout(() => setIsDeleting(true), 2200)
     } else if (isDeleting && currentText === '') {
       setIsDeleting(false)
@@ -166,7 +158,7 @@ function App() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  // Form Submit Handler (Connected with MongoDB Express API)
+  // Form Submit Handler
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     if (!formData.name || !formData.email || !formData.message) return
@@ -190,80 +182,71 @@ function App() {
         setIsFormSuccess(true)
         setFormData({ name: '', email: '', subject: '', message: '' })
       } else {
-        setFormError(result.error || 'Failed to transmit contact details. Please try again.')
+        setFormError(result.error || 'Failed to send message. Please try again.')
       }
     } catch (err) {
       console.error('Contact submission error:', err)
-      setFormError('Could not establish connection with database server. Please ensure it is running.')
+      setFormError('Could not establish connection with database server. Please try again.')
     } finally {
       setIsFormSubmitting(false)
     }
-  }
-
-  // Toggle Theme Function
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
 
   // Navigation Links array
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
     { id: 'experience', label: 'Experience' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'services', label: 'Services' },
+    { id: 'projects', label: 'Projects' },
     { id: 'resume', label: 'Resume' },
     { id: 'contact', label: 'Contact' }
   ]
 
-  // Skills Dataset
+  // Skills Dataset Categorized
   const skillsData = [
     // Frontend
-    { name: 'React.js', level: '92%', category: 'frontend', icon: Cpu },
-    { name: 'JavaScript (ES6+)', level: '90%', category: 'frontend', icon: Terminal },
-    { name: 'HTML5 & CSS3', level: '95%', category: 'frontend', icon: Layers },
-    { name: 'Bootstrap', level: '85%', category: 'frontend', icon: Layers },
+    { name: 'React.js', category: 'frontend', icon: Cpu },
+    { name: 'JavaScript', category: 'frontend', icon: Terminal },
+    { name: 'HTML5', category: 'frontend', icon: Layers },
+    { name: 'CSS3', category: 'frontend', icon: Layers },
+    { name: 'Bootstrap', category: 'frontend', icon: Layers },
+    { name: 'Tailwind CSS', category: 'frontend', icon: Layers },
+    { name: 'Responsive Web Design', category: 'frontend', icon: Layers },
     // Backend
-    { name: 'Node.js & Express', level: '88%', category: 'backend', icon: Terminal },
-    { name: 'PHP & Laravel', level: '85%', category: 'backend', icon: Database },
-    // Databases & Tools
-    { name: 'MySQL', level: '88%', category: 'databases & tools', icon: Database },
-    { name: 'MongoDB', level: '85%', category: 'databases & tools', icon: Database },
-    { name: 'Supabase', level: '80%', category: 'databases & tools', icon: Layers },
-    { name: 'Postman & REST APIs', level: '90%', category: 'databases & tools', icon: Terminal },
-    // DevOps & Cloud
-    { name: 'Docker Containerization', level: '80%', category: 'devops & cloud', icon: Cpu },
-    { name: 'Kubernetes (Basics)', level: '60%', category: 'devops & cloud', icon: Layers },
-    { name: 'CI/CD (GitHub Actions)', level: '82%', category: 'devops & cloud', icon: Layers },
-    { name: 'AWS Academy Foundations', level: '75%', category: 'devops & cloud', icon: Cpu }
-  ]
-
-  // Projects Dataset
-  const projectsData = [
-    {
-      title: 'DevFlow (E-Commerce & Referral)',
-      category: 'Full-Stack',
-      image: projectDevflow,
-      desc: 'An e-commerce platform integrated with a multi-level referral tracking and commission distribution system. Features complete shopping cart, catalog, and secure transactions.',
-      tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB'],
-      github: 'https://github.com/sivaprasathdev-sd/devflow-ecommerce-mlm'
-    },
-    {
-      title: 'Project Quantum (Inventory Management)',
-      category: 'Backend & DevOps',
-      image: projectQuantum,
-      desc: 'An enterprise inventory system featuring Role-Based Access Control (RBAC) and automated notifications. Fully containerized with Docker for robust environments.',
-      tech: ['PHP Laravel', 'MySQL', 'Docker', 'Bootstrap'],
-      github: 'https://github.com/sivaprasathdev-sd/project-quantum'
-    },
-    {
-      title: 'Project Apex (Developer API Testing)',
-      category: 'DevOps & CI/CD',
-      image: projectApex,
-      desc: 'A clean developer platform and dashboard for real-time API testing and validation. Integrated with GitHub Actions pipelines for automated test execution and reports.',
-      tech: ['React.js', 'Supabase', 'GitHub Actions', 'Postman'],
-      github: 'https://github.com/sivaprasathdev-sd/project_apex'
-    }
+    { name: 'Node.js', category: 'backend', icon: Terminal },
+    { name: 'Express.js', category: 'backend', icon: Terminal },
+    { name: 'PHP', category: 'backend', icon: Database },
+    { name: 'Laravel', category: 'backend', icon: Database },
+    { name: 'REST APIs', category: 'backend', icon: Terminal },
+    { name: 'API Development', category: 'backend', icon: Terminal },
+    // Database
+    { name: 'MongoDB', category: 'database', icon: Database },
+    { name: 'MySQL', category: 'database', icon: Database },
+    { name: 'Database Design', category: 'database', icon: Database },
+    // DevOps & Tools
+    { name: 'Git', category: 'devops & tools', icon: Layers },
+    { name: 'GitHub', category: 'devops & tools', icon: Layers },
+    { name: 'Docker', category: 'devops & tools', icon: Cpu },
+    { name: 'Linux', category: 'devops & tools', icon: Server },
+    { name: 'Apache', category: 'devops & tools', icon: Server },
+    { name: 'PM2', category: 'devops & tools', icon: Server },
+    { name: 'CI/CD', category: 'devops & tools', icon: Layers },
+    // Development
+    { name: 'Full-Stack Development', category: 'development', icon: Code },
+    { name: 'Web Application Development', category: 'development', icon: Code },
+    { name: 'Software Development', category: 'development', icon: Code },
+    { name: 'Authentication', category: 'development', icon: ShieldCheck },
+    { name: 'CRUD', category: 'development', icon: Code },
+    { name: 'Agile Development', category: 'development', icon: Workflow },
+    // Leadership
+    { name: 'Technical Leadership', category: 'leadership', icon: Users },
+    { name: 'Team Leadership', category: 'leadership', icon: Users },
+    { name: 'Mentoring', category: 'leadership', icon: Users },
+    { name: 'Code Review', category: 'leadership', icon: ShieldCheck },
+    { name: 'Project Coordination', category: 'leadership', icon: Workflow },
+    { name: 'Problem Solving', category: 'leadership', icon: Workflow }
   ]
 
   // Filter skills based on active tab selection
@@ -272,23 +255,171 @@ function App() {
       ? skillsData
       : skillsData.filter((skill) => skill.category === selectedSkillTab)
 
+  // Experience Dataset
+  const experienceData = [
+    {
+      title: 'Technical Lead',
+      company: 'Nandha InfoTech',
+      location: 'Coimbatore, Tamil Nadu, India',
+      period: 'August 2026 – Present',
+      employment: 'Full-time',
+      isCurrent: true,
+      description: [
+        'Lead the design, development, and delivery of scalable web applications.',
+        'Work hands-on across frontend, backend, database, API, and deployment layers.',
+        'Guide developers and interns through technical implementation, code reviews, and problem solving.',
+        'Participate in application architecture, database design, API design, and technology decisions.',
+        'Assign and track development tasks while supporting project delivery and technical quality.',
+        'Collaborate with stakeholders to understand requirements and translate business needs into software solutions.',
+        'Support production deployment, troubleshooting, server management, and application maintenance.',
+        'Promote clean code, reusable components, documentation, testing, and maintainable development practices.'
+      ],
+      technologies: [
+        'React.js', 'Node.js', 'Express.js', 'Laravel', 'PHP', 'MongoDB',
+        'MySQL', 'JavaScript', 'REST APIs', 'Git', 'Docker', 'Linux', 'PM2', 'Apache'
+      ]
+    },
+    {
+      title: 'Application Developer',
+      company: 'Nandha InfoTech',
+      location: 'Coimbatore, Tamil Nadu, India',
+      period: 'June 2024 – July 2026',
+      employment: 'Full-time',
+      isCurrent: false,
+      description: [
+        'Developed and maintained web applications using PHP, Laravel, React.js, Node.js, Express.js, MongoDB, and MySQL.',
+        'Developed RESTful APIs and integrated frontend applications with backend services.',
+        'Built responsive and user-friendly interfaces using React.js, HTML5, CSS3, Bootstrap, and JavaScript.',
+        'Developed full-stack MERN applications with database integration and authentication.',
+        'Designed and maintained MySQL and MongoDB databases.',
+        'Implemented CRUD operations, business logic, API integrations, and application features.',
+        'Debugged production issues, fixed application bugs, and improved existing functionality.',
+        'Used Git and GitHub for version control and collaborative development.',
+        'Participated in deployment, server maintenance, and production support.'
+      ],
+      technologies: [
+        'PHP', 'Laravel', 'React.js', 'Node.js', 'Express.js', 'MongoDB',
+        'MySQL', 'JavaScript', 'HTML5', 'CSS3', 'Bootstrap', 'Git', 'REST APIs'
+      ]
+    },
+    {
+      title: 'Application Developer Intern',
+      company: 'Nandha InfoTech',
+      location: 'Coimbatore, Tamil Nadu, India',
+      period: 'January 2024 – May 2024',
+      employment: 'Internship',
+      isCurrent: false,
+      description: [
+        'Gained hands-on experience in professional web application development.',
+        'Worked with PHP, Laravel, MySQL, HTML5, CSS3, Bootstrap, and JavaScript.',
+        'Assisted in developing and maintaining web application features.',
+        'Developed CRUD functionality and database-driven application modules.',
+        'Built responsive web pages using HTML, CSS, Bootstrap, and JavaScript.',
+        'Used Git for source control and collaborated with the development team.',
+        'Debugged issues, tested application functionality, and improved existing features.',
+        'Developed a strong foundation in backend development, database management, and full-stack web development.'
+      ],
+      technologies: [
+        'PHP', 'Laravel', 'MySQL', 'JavaScript', 'HTML5', 'CSS3', 'Bootstrap', 'Git'
+      ]
+    }
+  ]
+
+  // Services Dataset
+  const servicesData = [
+    {
+      title: 'Full-Stack Development',
+      desc: 'Building complete web applications across frontend, backend, APIs, databases, and business logic.',
+      icon: Code
+    },
+    {
+      title: 'Backend & API Development',
+      desc: 'Designing RESTful APIs, backend services, authentication, and application business logic.',
+      icon: Database
+    },
+    {
+      title: 'Enterprise Web Applications',
+      desc: 'Developing business-focused applications such as ERP, CRM, inventory, e-commerce, and management systems.',
+      icon: Briefcase
+    },
+    {
+      title: 'Technical Leadership',
+      desc: 'Guiding developers, reviewing implementations, solving technical problems, and supporting project delivery.',
+      icon: Users
+    },
+    {
+      title: 'Deployment & Production Support',
+      desc: 'Deploying, maintaining, troubleshooting, and supporting applications in Linux-based production environments.',
+      icon: Server
+    }
+  ]
+
+  // Projects Dataset
+  const projectsData = [
+    {
+      title: 'DevFlow (E-Commerce & Referral System)',
+      shortDesc: 'Full-stack web application designed to streamline business operations through centralized data management and workflow automation.',
+      purpose: 'An e-commerce platform integrated with a multi-level referral tracking and commission distribution system.',
+      contribution: 'Led full-stack architecture, engineered secure cart workflows, API integrations, and referral tracking logic.',
+      keyFeatures: [
+        'Multi-level commission calculation and referral tracking',
+        'Centralized product catalog and dynamic shopping cart',
+        'Secure payment and transaction processing',
+        'User and partner portal dashboard'
+      ],
+      image: projectDevflow,
+      tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs'],
+      github: 'https://github.com/sivaprasathdev-sd/devflow-ecommerce-mlm'
+    },
+    {
+      title: 'Project Quantum (Inventory Management System)',
+      shortDesc: 'Enterprise-ready inventory and supply chain tracking system with granular permissions.',
+      purpose: 'Centralized inventory tracking application with Role-Based Access Control (RBAC) and automated notifications.',
+      contribution: 'Designed MySQL database schema, implemented Laravel backend REST APIs, RBAC modules, and Docker containerization.',
+      keyFeatures: [
+        'Role-Based Access Control (RBAC) for admins and operators',
+        'Automated inventory notification alerts and stock metrics',
+        'Product category and order fulfillment tracking',
+        'Containerized deployment using Docker'
+      ],
+      image: projectQuantum,
+      tech: ['PHP', 'Laravel', 'MySQL', 'Docker', 'Bootstrap', 'REST APIs'],
+      github: 'https://github.com/sivaprasathdev-sd/project-quantum'
+    },
+    {
+      title: 'Project Apex (Developer API Testing Platform)',
+      shortDesc: 'Real-time API testing platform and developer dashboard for validation workflows.',
+      purpose: 'Simplifies API endpoint verification and pipeline status monitoring for engineering teams.',
+      contribution: 'Built interactive React dashboard interface, Supabase integration, and GitHub Actions CI/CD workflows.',
+      keyFeatures: [
+        'Real-time API endpoint testing and status validation',
+        'Automated pipeline integration with GitHub Actions',
+        'Visual response metric graphs and error logging',
+        'Supabase backend integration for test suite storage'
+      ],
+      image: projectApex,
+      tech: ['React.js', 'Supabase', 'GitHub Actions', 'Postman', 'JavaScript'],
+      github: 'https://github.com/sivaprasathdev-sd/project_apex'
+    }
+  ]
+
   return (
     <>
-      {/* 1. Dynamic Background & Glow Orbs */}
+      {/* Subtle Background Glow */}
       <div className="glow-bg" aria-hidden="true">
         <div className="glow-orb-1"></div>
         <div className="glow-orb-2"></div>
       </div>
 
-      {/* 2. Navigation Header Bar */}
+      {/* Navigation Header Bar */}
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
         <div className="container">
           <a href="#home" className="nav-logo" id="logo-anchor">
-            <span>SIVA</span>
-            <span className="text-gradient-primary">PRASATH</span>
+            <span>SIVAPRASATH</span>
+            <span className="text-gradient-primary">S S</span>
           </a>
 
-          {/* Nav Items Desktop */}
+          {/* Desktop Nav Items */}
           <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
             {navItems.map((item) => (
               <li key={item.id}>
@@ -304,17 +435,7 @@ function App() {
           </ul>
 
           <div className="nav-actions">
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              className="theme-toggle"
-              aria-label="Toggle display theme"
-              id="theme-toggler-btn"
-            >
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-
-            {/* Mobile Navigation Menu Button */}
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="menu-btn"
@@ -327,38 +448,39 @@ function App() {
         </div>
       </nav>
 
-      {/* 3. Hero Showcase Section */}
+      {/* Hero Section */}
       <section id="home" className="section container">
         <div className="hero-grid">
           <div className="hero-content">
             <div className="hero-welcome">
-              <span className="badge">Available for Work</span>
+              <span className="badge">Technical Lead @ Nandha InfoTech</span>
             </div>
-            <h1 className="hero-title">Siva Prasath S S</h1>
+            <h1 className="hero-title">Technical Lead & Full Stack Developer</h1>
             <div className="hero-subtitle">
-              <span>I'm a </span>
+              <span>Specializing in </span>
               <span className="text-gradient-primary">{currentText}</span>
               <span className="cursor-blink">|</span>
             </div>
             <p className="hero-desc">
-              Passionate Application Developer specializing in building high-performance, scalable web
-              applications. Expert in full-stack architecture using React.js, Node.js, and PHP Laravel,
-              reinforced by clean databases and containerized deployment.
+              Building scalable, reliable, and user-focused web applications using MERN Stack, Laravel, PHP, and modern web technologies.
+            </p>
+            <p className="about-paragraph" style={{ fontWeight: 600, color: 'var(--color-primary)', marginBottom: '32px' }}>
+              Design. Develop. Lead. Deliver.
             </p>
             <div className="hero-ctas">
               <a href="#projects" className="btn-primary">
-                View My Projects <ExternalLink size={18} />
+                View My Work <ExternalLink size={18} />
               </a>
               <a href="#contact" className="btn-secondary">
-                Let's Talk
+                Let's Connect
               </a>
             </div>
 
             <div className="hero-socials">
-              <span className="hero-social-label">Follow Me:</span>
+              <span className="hero-social-label">Connect:</span>
               <div className="hero-social-links">
                 <a
-                  href="https://linkedin.com/in/sivaprasath-s-s/"
+                  href="https://www.linkedin.com/in/sivaprasath-s-s/"
                   target="_blank"
                   rel="noreferrer"
                   className="hero-social-btn"
@@ -378,7 +500,7 @@ function App() {
                 <a
                   href="mailto:sivaprasath.dev@gmail.com"
                   className="hero-social-btn"
-                  aria-label="Email Siva"
+                  aria-label="Email Sivaprasath"
                 >
                   <Mail size={18} />
                 </a>
@@ -388,104 +510,102 @@ function App() {
 
           <div className="hero-visual">
             <div className="photo-wrapper">
-              <div className="photo-glow"></div>
               <div className="photo-inner">
                 <img
                   src={spImg}
-                  alt="Siva Prasath S S profile photo"
+                  alt="Sivaprasath S S profile photo"
                   onError={(e) => {
                     e.target.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600'
                   }}
                 />
               </div>
               <div className="tech-badge-float tech-badge-1">
-                <Cpu size={16} className="text-gradient-primary" /> Full Stack Developer
+                <Cpu size={16} style={{ color: 'var(--color-primary)' }} /> Technical Lead
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. About Me Section */}
+      {/* About Section */}
       <section id="about" className="section container">
         <div className="section-header">
           <span className="section-subtitle">About Me</span>
-          <h2 className="section-title">My Background & Core Values</h2>
+          <h2 className="section-title">Professional Background</h2>
         </div>
 
         <div className="about-grid">
           <div className="about-intro-container">
             <h3 className="about-text-title">
-              Driven by <span className="text-gradient-primary">Performance</span>, Committed to Quality
+              Engineering <span className="text-gradient-primary">Maintainable Software</span> & Leading Teams
             </h3>
             <p className="about-paragraph">
-              I am an energetic full-stack application developer based in Coimbatore, India. Armed with a
-              Master of Computer Applications (MCA) and a solid grasp of modern technology, I focus on constructing
-              functional, beautiful, and extremely scalable digital environments.
+              I am a Technical Lead and Full Stack Developer at Nandha InfoTech, focused on designing, developing, and delivering scalable web applications that solve real-world business problems.
             </p>
             <p className="about-paragraph">
-              From implementing multi-level commission structures to deploying inventory microservices
-              using Docker, I thrive on analyzing complex requirements and delivering high-value products in agile
-              environments.
+              My experience spans both MERN Stack and Laravel/PHP ecosystems, with hands-on expertise in React.js, Node.js, Express.js, PHP, Laravel, MongoDB, MySQL, REST APIs, Git, Docker, and Linux-based application deployment.
+            </p>
+            <p className="about-paragraph">
+              Alongside development, I take ownership of technical implementation, guide developers and interns, participate in architecture and database decisions, review code, coordinate project activities, and support production deployments.
+            </p>
+            <p className="about-paragraph">
+              I enjoy turning business requirements into maintainable software, improving application performance, and continuously exploring modern technologies that help teams build better products.
             </p>
 
-            {/* About Stats Grid */}
+            {/* Key Quick Highlights */}
             <div className="about-stats">
               <div className="stat-card glass">
-                <span className="stat-number text-gradient-primary">2+</span>
-                <span className="stat-label">Years Experience</span>
+                <span className="stat-number text-gradient-primary">Lead</span>
+                <span className="stat-label">Technical Leadership</span>
               </div>
               <div className="stat-card glass">
-                <span className="stat-number text-gradient-primary">8.0</span>
-                <span className="stat-label">MCA CGPA</span>
+                <span className="stat-number text-gradient-primary">Full Stack</span>
+                <span className="stat-label">MERN + Laravel/PHP</span>
               </div>
               <div className="stat-card glass">
-                <span className="stat-number text-gradient-primary">5+</span>
-                <span className="stat-label">Deployments</span>
+                <span className="stat-number text-gradient-primary">Docker</span>
+                <span className="stat-label">Linux Deployments</span>
               </div>
               <div className="stat-card glass">
-                <span className="stat-number text-gradient-primary">100%</span>
-                <span className="stat-label">Performance Goal</span>
+                <span className="stat-number text-gradient-primary">REST APIs</span>
+                <span className="stat-label">Clean DB Design</span>
               </div>
             </div>
           </div>
 
           <div className="about-cards">
-            {/* Feature 1 */}
+            <div className="about-feature-card glass">
+              <div className="feature-icon-box">
+                <Users size={22} />
+              </div>
+              <div className="feature-info">
+                <h3>Technical Ownership & Leadership</h3>
+                <p>
+                  Guiding developers and interns, performing thorough code reviews, planning application architecture, and coordinating delivery.
+                </p>
+              </div>
+            </div>
+
             <div className="about-feature-card glass">
               <div className="feature-icon-box">
                 <Database size={22} />
               </div>
               <div className="feature-info">
-                <h3>Robust Backend Architectures</h3>
+                <h3>Full Stack Architecture</h3>
                 <p>
-                  Specialized in writing super-fast RESTful APIs in Node.js, Express, and PHP Laravel, implementing role-based access control and solid relational models.
+                  Designing robust web applications using React.js on the frontend, Express/Node.js or PHP/Laravel on the backend, and MySQL/MongoDB for storage.
                 </p>
               </div>
             </div>
 
-            {/* Feature 2 */}
             <div className="about-feature-card glass">
               <div className="feature-icon-box">
-                <Cpu size={22} />
+                <Server size={22} />
               </div>
               <div className="feature-info">
-                <h3>Responsive Frontend UIs</h3>
+                <h3>Deployment & Production Support</h3>
                 <p>
-                  Translating creative mockups into clean, interactive React code bases with modern styling grids, high accessibility compliance, and instant load speeds.
-                </p>
-              </div>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="about-feature-card glass">
-              <div className="feature-icon-box">
-                <Layers size={22} />
-              </div>
-              <div className="feature-info">
-                <h3>Cloud Operations & DevOps</h3>
-                <p>
-                  Packaging, containerizing, and orchestrating nodes with Docker, structuring automated test frameworks with GitHub Actions, and organizing cloud databases.
+                  Containerizing apps with Docker, setting up Linux servers, managing PM2/Apache configurations, and troubleshooting live production systems.
                 </p>
               </div>
             </div>
@@ -493,16 +613,60 @@ function App() {
         </div>
       </section>
 
-      {/* 5. Skills Grid Section */}
+      {/* Experience / Career Section */}
+      <section id="experience" className="section container">
+        <div className="section-header">
+          <span className="section-subtitle">Career Path</span>
+          <h2 className="section-title">Professional Experience</h2>
+        </div>
+
+        <div className="timeline-container">
+          <div className="timeline-line"></div>
+
+          {experienceData.map((exp, index) => (
+            <div key={index} className="timeline-item">
+              <div className="timeline-dot"></div>
+              <div className="timeline-card glass">
+                <div className="timeline-meta">
+                  <div className="timeline-role-org">
+                    <h3>{exp.title}</h3>
+                    <span className="timeline-org">{exp.company}</span>
+                  </div>
+                  <div className="timeline-time-loc">
+                    <span className="timeline-time">{exp.period}</span>
+                    <span className="timeline-loc">{exp.location} • {exp.employment}</span>
+                  </div>
+                </div>
+
+                <ul className="timeline-desc">
+                  {exp.description.map((bullet, bIdx) => (
+                    <li key={bIdx}>{bullet}</li>
+                  ))}
+                </ul>
+
+                <div className="project-tech" style={{ marginTop: '20px', marginBottom: 0 }}>
+                  {exp.technologies.map((tech, tIdx) => (
+                    <span key={tIdx} className="tech-pill">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Categorized Skills Section */}
       <section id="skills" className="section container">
         <div className="section-header">
           <span className="section-subtitle">Skills & Expertise</span>
-          <h2 className="section-title">My Technical Stack</h2>
+          <h2 className="section-title">Technical Competencies</h2>
         </div>
 
         {/* Skill Category Filtering Tabs */}
         <div className="skills-nav">
-          {['all', 'frontend', 'backend', 'databases & tools', 'devops & cloud'].map((cat) => (
+          {['all', 'frontend', 'backend', 'database', 'devops & tools', 'development', 'leadership'].map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedSkillTab(cat)}
@@ -526,14 +690,8 @@ function App() {
                   </div>
                   <span className="skill-title">{skill.name}</span>
                 </div>
-                <div className="skill-bar-wrap">
-                  <div className="skill-bar-info">
-                    <span>Expertise</span>
-                    <span>{skill.level}</span>
-                  </div>
-                  <div className="skill-bar-bg">
-                    <div className="skill-bar-fill" style={{ width: skill.level }}></div>
-                  </div>
+                <div style={{ textTransform: 'capitalize', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  Category: {skill.category}
                 </div>
               </div>
             )
@@ -541,11 +699,34 @@ function App() {
         </div>
       </section>
 
-      {/* 6. Projects Showcase Section */}
+      {/* Services / What I Do Section */}
+      <section id="services" className="section container">
+        <div className="section-header">
+          <span className="section-subtitle">What I Do</span>
+          <h2 className="section-title">Core Professional Services</h2>
+        </div>
+
+        <div className="projects-grid">
+          {servicesData.map((service, index) => {
+            const IconComp = service.icon
+            return (
+              <div key={index} className="glass" style={{ padding: '32px' }}>
+                <div className="feature-icon-box" style={{ marginBottom: '20px' }}>
+                  <IconComp size={24} />
+                </div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '12px' }}>{service.title}</h3>
+                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>{service.desc}</p>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* Projects Showcase Section */}
       <section id="projects" className="section container">
         <div className="section-header">
           <span className="section-subtitle">Selected Work</span>
-          <h2 className="section-title">My Masterpieces</h2>
+          <h2 className="section-title">Featured Projects</h2>
         </div>
 
         <div className="projects-grid">
@@ -553,15 +734,35 @@ function App() {
             <article key={idx} className="project-card glass">
               <div className="project-image-box">
                 <img src={project.image} alt={project.title} />
-                <div className="project-image-overlay">
-                  <span className="project-category">{project.category}</span>
-                </div>
               </div>
               <div className="project-body">
                 <div className="project-title">
                   <h3>{project.title}</h3>
                 </div>
-                <p className="project-desc">{project.desc}</p>
+                
+                <p className="project-desc" style={{ fontWeight: 500, color: 'var(--text-primary)', marginBottom: '12px' }}>
+                  {project.shortDesc}
+                </p>
+
+                <div style={{ marginBottom: '16px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>Purpose / Problem:</strong> {project.purpose}
+                </div>
+
+                <div style={{ marginBottom: '16px', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>My Contribution:</strong> {project.contribution}
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <strong style={{ fontSize: '0.9rem', color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
+                    Key Features:
+                  </strong>
+                  <ul style={{ paddingLeft: '18px', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                    {project.keyFeatures.map((feat, fIdx) => (
+                      <li key={fIdx} style={{ marginBottom: '4px' }}>{feat}</li>
+                    ))}
+                  </ul>
+                </div>
+
                 <div className="project-tech">
                   {project.tech.map((pill, i) => (
                     <span key={i} className="tech-pill">
@@ -569,151 +770,63 @@ function App() {
                     </span>
                   ))}
                 </div>
-                <div className="project-links">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="project-link-btn"
-                  >
-                    <Github size={16} /> Codebase
-                  </a>
-                </div>
+
+                {project.github && (
+                  <div className="project-links">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="project-link-btn"
+                    >
+                      <Github size={16} /> GitHub Repository
+                    </a>
+                  </div>
+                )}
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      {/* 7. Experience Timeline Section */}
-      <section id="experience" className="section container">
-        <div className="section-header">
-          <span className="section-subtitle">Career Path</span>
-          <h2 className="section-title">Experience & Education</h2>
-        </div>
-
-        <div className="timeline-container">
-          <div className="timeline-line"></div>
-
-          {/* Timeline Item 1 - Professional */}
-          <div className="timeline-item">
-            <div className="timeline-dot"></div>
-            <div className="timeline-card glass">
-              <div className="timeline-meta">
-                <div className="timeline-role-org">
-                  <h3>Application Developer</h3>
-                  <span className="timeline-org">Nandha Infotech</span>
-                </div>
-                <div className="timeline-time-loc">
-                  <span className="timeline-time">June 2024 – Present</span>
-                  <span className="timeline-loc">Coimbatore, India</span>
-                </div>
-              </div>
-              <ul className="timeline-desc">
-                <li>
-                  Developed high-fidelity full-stack applications using React.js, Node.js, and Laravel, increasing system efficiency and overall maintainability by ~30%.
-                </li>
-                <li>
-                  Designed, structured, and implemented a multi-level commission referral flow, boosting transaction logic processing rates.
-                </li>
-                <li>
-                  Refactored core e-commerce modules including catalogs, shopping cart widgets, and order dispatch pipelines.
-                </li>
-                <li>
-                  Engineered modular inventory tracking boards backed by role-based credentials (RBAC) to ensure tight security boundaries.
-                </li>
-                <li>
-                  Wrapped modules inside Docker containers and built automated testing operations through custom GitHub Actions.
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Timeline Item 2 - Education MCA */}
-          <div className="timeline-item">
-            <div className="timeline-dot"></div>
-            <div className="timeline-card glass">
-              <div className="timeline-meta">
-                <div className="timeline-role-org">
-                  <h3>Master of Computer Applications (MCA)</h3>
-                  <span className="timeline-org">Dr. Mahalingam College of Engineering and Technology</span>
-                </div>
-                <div className="timeline-time-loc">
-                  <span className="timeline-time">2022 – 2024</span>
-                  <span className="timeline-loc">Pollachi, India</span>
-                </div>
-              </div>
-              <ul className="timeline-desc">
-                <li>Acquired deep knowledge of Advanced Software Architecture, Relational Databases (RDBMS), and Distributed Computing systems.</li>
-                <li>Graduated with an excellent performance rating of 8.0 / 10 CGPA.</li>
-                <li>Spearheaded academic projects showcasing complex full-stack web capabilities.</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Timeline Item 3 - Education CS */}
-          <div className="timeline-item">
-            <div className="timeline-dot"></div>
-            <div className="timeline-card glass">
-              <div className="timeline-meta">
-                <div className="timeline-role-org">
-                  <h3>Bachelor of Computer Science</h3>
-                  <span className="timeline-org">Sri Krishna College of Arts and Science</span>
-                </div>
-                <div className="timeline-time-loc">
-                  <span className="timeline-time">2019 – 2022</span>
-                  <span className="timeline-loc">Coimbatore, India</span>
-                </div>
-              </div>
-              <ul className="timeline-desc">
-                <li>Solidified core principles of computer programming, algorithms, data structures, and computer networks.</li>
-                <li>Graduated with a cumulative academic success rate of 8.0 / 10 CGPA.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Resume Section */}
+      {/* Resume Section */}
       <section id="resume" className="section container">
         <div className="section-header">
           <span className="section-subtitle">Resume</span>
-          <h2 className="section-title">Qualifications Overview</h2>
+          <h2 className="section-title">Professional Qualifications</h2>
         </div>
 
         <div className="resume-section-wrapper">
           <div className="resume-header-bar">
             <div className="resume-info-summary">
               <h3>Curriculum Vitae</h3>
-              <p>Siva Prasath S S - Application Developer credentials</p>
+              <p>Sivaprasath S S — Technical Lead & Full Stack Developer credentials</p>
             </div>
             <a
               href="/Sivaprasath_SS_Resume.pdf"
-              download="Siva_Prasath_Resume.pdf"
+              download="Sivaprasath_SS_Resume.pdf"
               className="btn-primary"
               id="resume-download-btn"
             >
-              <Download size={18} /> Download Resume PDF
+              <Download size={18} /> Download Resume
             </a>
           </div>
 
           <div className="resume-viewer-container glass">
-            {/* Native iframe view of PDF */}
             <iframe
               src="/Sivaprasath_SS_Resume.pdf#toolbar=0"
-              title="Siva Prasath S S Resume Document"
+              title="Sivaprasath S S Resume Document"
               className="resume-iframe"
             ></iframe>
           </div>
 
-          {/* Elegant Mobile Resume Card (toggled via CSS on <= 768px screens) */}
           <div className="resume-mobile-card glass">
             <div className="resume-mobile-icon-wrap">
-              <FileText size={40} className="text-gradient-primary" />
+              <FileText size={40} style={{ color: 'var(--color-primary)' }} />
             </div>
-            <h4>Resume Preview</h4>
+            <h4>Resume Document</h4>
             <p>
-              View or download Siva Prasath's comprehensive qualifications, technology stack expertise, and experience.
+              Download or preview Sivaprasath's professional experience, technical qualifications, and career background.
             </p>
             <div className="resume-mobile-actions">
               <a
@@ -726,21 +839,21 @@ function App() {
               </a>
               <a
                 href="/Sivaprasath_SS_Resume.pdf"
-                download="Siva_Prasath_Resume.pdf"
+                download="Sivaprasath_SS_Resume.pdf"
                 className="btn-primary"
               >
-                <Download size={16} /> Download
+                <Download size={16} /> Download Resume
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 9. Contact Section */}
+      {/* Contact Section */}
       <section id="contact" className="section container">
         <div className="section-header">
-          <span className="section-subtitle">Contact Me</span>
-          <h2 className="section-title">Let's Establish a Connection</h2>
+          <span className="section-subtitle">Contact</span>
+          <h2 className="section-title">Let's Build Something Great</h2>
         </div>
 
         <div className="contact-grid">
@@ -748,40 +861,51 @@ function App() {
             <div className="contact-intro">
               <h3>Get In Touch</h3>
               <p>
-                Have an exciting project idea, a position to fill, or simply want to chat about scalable backend pipelines? Feel free to reach out using the form or direct coordinates below!
+                I'm open to connecting with professionals, teams, and organizations working on interesting software products and technology initiatives.
               </p>
             </div>
 
             <div className="contact-details">
-              {/* Phone item */}
-              <div className="contact-item">
-                <div className="contact-item-icon">
-                  <Phone size={20} />
-                </div>
-                <div className="contact-item-content">
-                  <span>Call / Text</span>
-                  <a href="tel:+917548814113">+91 7548814113</a>
-                </div>
-              </div>
-
-              {/* Email item */}
               <div className="contact-item">
                 <div className="contact-item-icon">
                   <Mail size={20} />
                 </div>
                 <div className="contact-item-content">
-                  <span>Direct Mail</span>
+                  <span>Email</span>
                   <a href="mailto:sivaprasath.dev@gmail.com">sivaprasath.dev@gmail.com</a>
                 </div>
               </div>
 
-              {/* Location item */}
+              <div className="contact-item">
+                <div className="contact-item-icon">
+                  <Linkedin size={20} />
+                </div>
+                <div className="contact-item-content">
+                  <span>LinkedIn</span>
+                  <a href="https://www.linkedin.com/in/sivaprasath-s-s/" target="_blank" rel="noreferrer">
+                    sivaprasath-s-s
+                  </a>
+                </div>
+              </div>
+
+              <div className="contact-item">
+                <div className="contact-item-icon">
+                  <Github size={20} />
+                </div>
+                <div className="contact-item-content">
+                  <span>GitHub</span>
+                  <a href="https://github.com/sivaprasath-s-s" target="_blank" rel="noreferrer">
+                    sivaprasath-s-s
+                  </a>
+                </div>
+              </div>
+
               <div className="contact-item">
                 <div className="contact-item-icon">
                   <MapPin size={20} />
                 </div>
                 <div className="contact-item-content">
-                  <span>Base Location</span>
+                  <span>Location</span>
                   <p>Coimbatore, Tamil Nadu, India</p>
                 </div>
               </div>
@@ -840,7 +964,7 @@ function App() {
                   value={formData.message}
                   onChange={handleInputChange}
                   className="form-control"
-                  placeholder="Write your details here..."
+                  placeholder="Write your message here..."
                   required
                 ></textarea>
               </div>
@@ -852,21 +976,19 @@ function App() {
                   disabled={isFormSubmitting}
                   id="form-submit-action-btn"
                 >
-                  {isFormSubmitting ? 'Sending Message...' : 'Transmit Message'}
+                  {isFormSubmitting ? 'Sending Message...' : 'Send Message'}
                 </button>
               </div>
 
-              {/* Form Success Toast Display */}
               {isFormSuccess && (
                 <div className="submit-success-msg">
                   <CheckCircle size={20} />
-                  <span>Success! Your message was recorded in the database. Siva will respond shortly.</span>
+                  <span>Success! Your message has been sent. Sivaprasath will respond shortly.</span>
                 </div>
               )}
 
-              {/* Form Error Toast Display */}
               {formError && (
-                <div className="submit-success-msg" style={{ color: '#f43f5e' }}>
+                <div className="submit-success-msg" style={{ color: '#e11d48' }}>
                   <X size={20} />
                   <span>{formError}</span>
                 </div>
@@ -876,15 +998,15 @@ function App() {
         </div>
       </section>
 
-      {/* 10. Footer Section */}
+      {/* Footer Section */}
       <footer className="footer">
         <div className="container footer-content">
           <div className="footer-logo">
-            <span>SIVA </span>
-            <span className="text-gradient-primary">PRASATH</span>
+            <span>SIVAPRASATH </span>
+            <span className="text-gradient-primary">S S</span>
           </div>
           <span className="footer-copy">
-            &copy; {new Date().getFullYear()} Siva Prasath S S. All rights reserved.
+            &copy; {new Date().getFullYear()} Sivaprasath S S. All rights reserved.
           </span>
           <a
             href="#home"
